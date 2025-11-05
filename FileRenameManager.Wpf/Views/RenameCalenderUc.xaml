@@ -1,0 +1,20 @@
+﻿<local:RBaseUc x:TypeArguments="viewModels:CalenderRenamerVm" x:Class="FileRenameManager.Wpf.Views.RenameCalenderUc"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+               xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+               xmlns:local="clr-namespace:FileRenameManager.Wpf.Views"
+               xmlns:viewModels="clr-namespace:FileRenameManager.Wpf.ViewModels"
+               mc:Ignorable="d" 
+               d:DesignHeight="200" d:DesignWidth="300" Background="WhiteSmoke">
+    <Grid>
+        <GroupBox Margin="3" Header="Options">
+            <StackPanel>
+                <TextBox  Padding="5" Background="WhiteSmoke" Margin="5" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"  Text="Move the images in folders named data based from the metadata"></TextBox>
+                <CheckBox x:Name="RecursiveCheckBox" Margin="5" Content="Recursive?"></CheckBox>
+                <Button x:Name="CalRenameBtn" HorizontalAlignment="Left" Content="Rename" Width="100" Margin="5" />
+
+            </StackPanel>
+        </GroupBox>
+    </Grid>
+</local:RBaseUc>

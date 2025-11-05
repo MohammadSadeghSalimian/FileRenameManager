@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36518.9 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileRenameManager.Core", "FileRenameManager.Core\FileRenameManager.Core.csproj", "{309C464C-5CC3-45E2-B22B-42C4C91146F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileRenameManager.Wpf", "FileRenameManager.Wpf\FileRenameManager.Wpf.csproj", "{39981D00-C5DE-45DF-BB1E-1EF9E4258D53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileRenameManager.Infrastructures", "FileRenameManager.Infrastructures\FileRenameManager.Infrastructures.csproj", "{8AE1B68E-F1E3-4867-9BAA-D2C6FA4B6DC3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileRenameManager.App", "FileRenameManager.App\FileRenameManager.App.csproj", "{C2166AB4-E995-464C-BC10-6F30F91F2AD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileRenameManager.ConsoleApp", "FileRenameManager.ConsoleApp\FileRenameManager.ConsoleApp.csproj", "{23366FC0-ADED-4038-9039-FDA65F46FBB0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{309C464C-5CC3-45E2-B22B-42C4C91146F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{309C464C-5CC3-45E2-B22B-42C4C91146F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{309C464C-5CC3-45E2-B22B-42C4C91146F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{309C464C-5CC3-45E2-B22B-42C4C91146F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39981D00-C5DE-45DF-BB1E-1EF9E4258D53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39981D00-C5DE-45DF-BB1E-1EF9E4258D53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39981D00-C5DE-45DF-BB1E-1EF9E4258D53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39981D00-C5DE-45DF-BB1E-1EF9E4258D53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AE1B68E-F1E3-4867-9BAA-D2C6FA4B6DC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AE1B68E-F1E3-4867-9BAA-D2C6FA4B6DC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AE1B68E-F1E3-4867-9BAA-D2C6FA4B6DC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AE1B68E-F1E3-4867-9BAA-D2C6FA4B6DC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2166AB4-E995-464C-BC10-6F30F91F2AD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2166AB4-E995-464C-BC10-6F30F91F2AD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2166AB4-E995-464C-BC10-6F30F91F2AD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2166AB4-E995-464C-BC10-6F30F91F2AD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23366FC0-ADED-4038-9039-FDA65F46FBB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23366FC0-ADED-4038-9039-FDA65F46FBB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23366FC0-ADED-4038-9039-FDA65F46FBB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23366FC0-ADED-4038-9039-FDA65F46FBB0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CAB273E7-E19E-4B2B-AF03-D1BA45E5C1CF}
+	EndGlobalSection
+EndGlobal
