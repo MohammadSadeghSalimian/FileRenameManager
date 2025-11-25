@@ -2,5 +2,5 @@
 
 public enum RequestedMethod
 {
-    PhoneCamera, RoamingCamera, StationaryCamera, DicCamera
+    PhoneCamera, RoamingCamera, FixedCamera, DicCamera,Exit
 }

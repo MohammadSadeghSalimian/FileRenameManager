@@ -8,7 +8,7 @@ public sealed class VideoMetadataService(IReporter reporter) : IVideoMetadataSer
 {
     private readonly IReporter _reporter = reporter ?? throw new ArgumentNullException(nameof(reporter));
 
-    public VideoWithDate GetVideoWithDate(FileInfo file)
+    public FileWithDate GetMediaWithDate(FileInfo file, double hourOffset)
     {
         ArgumentNullException.ThrowIfNull(file);
 
@@ -24,8 +24,11 @@ public sealed class VideoMetadataService(IReporter reporter) : IVideoMetadataSer
         }
 
         dateTaken ??= GuessFallbackDate(file);
-
-        return new VideoWithDate(file, dateTaken);
+        if (dateTaken != null)
+        {
+            dateTaken = dateTaken.Value.AddHours(hourOffset);
+        }
+        return new FileWithDate(file, dateTaken);
     }
 
     private static DateTime? TryReadVideoDate(FileInfo file)

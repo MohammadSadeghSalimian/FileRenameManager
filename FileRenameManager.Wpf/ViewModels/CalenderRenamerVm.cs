@@ -39,7 +39,7 @@ public sealed partial class CalenderRenamerVm : BaseVm
             try
             {
                 ArgumentNullException.ThrowIfNull(directory);
-                await _mediator.Send(new RenamePhoneCameraRq(directory, RecursiveFolder));
+                //await _mediator.Send(new OrganizePhoneCameraRq(directory, RecursiveFolder));
             }
             catch (Exception e)
             {

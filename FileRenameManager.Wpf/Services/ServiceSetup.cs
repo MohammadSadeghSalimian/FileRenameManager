@@ -4,7 +4,7 @@ using FileRenameManager.Infrastructures;
 using FileRenameManager.Wpf.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging;
+
 using ReactiveUI;
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
@@ -68,12 +68,15 @@ namespace FileRenameManager.Wpf.Services
         {
             services.AddSingleton<IReporter, DebugReporter>(); // Replace with your WPF reporter later
             services.AddSingleton<IImageFileProvider, ImageFileProvider>();
+            services.AddSingleton<IVideoFileProvider, VideoFileProvider>();
             services.AddSingleton<IPhotoMetadataService, PhotoMetadataService>();
-            services.AddSingleton<IFolderNameProvider, DefaultFolderNameProvider>();
+            services.AddSingleton<IVideoMetadataService, VideoMetadataService>();
+            services.AddSingleton<INameProvider, DefaultNameProvider>();
             services.AddSingleton<IFileMover, SafeFileMover>();
-            services.AddSingleton<IPhotoOrganizer, PhotoOrganizer>();
+            services.AddSingleton<IFileOrganizer, FileOrganizer>();
             services.AddSingleton<IFfUnit, CommonFfUnit>();
             services.AddSingleton<IMessageUnit, MessageUnit>();
+            services.AddSingleton<IFileSearcher, FileSearcher>();
         }
 
         private void SetLocator()

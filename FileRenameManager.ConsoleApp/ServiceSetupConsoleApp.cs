@@ -52,16 +52,16 @@ public class ServiceSetupConsoleApp
        
     private static void AddAppServices(ServiceCollection services)
     {
-        services.AddSingleton<IReporter, DebugReporter>(); // Replace with your WPF reporter later
+        services.AddSingleton<IReporter, AnsiConsoleReporter>(); // Replace with your WPF reporter later
         services.AddSingleton<IImageFileProvider, ImageFileProvider>();
-        services.AddSingleton<IPhotoMetadataService, PhotoMetadataService>();
-        services.AddSingleton<IFolderNameProvider, DefaultFolderNameProvider>();
-        services.AddSingleton<IFileMover, SafeFileMover>();
-        services.AddSingleton<IPhotoOrganizer, PhotoOrganizer>();
-        services.AddSingleton<IVideoOrganizer, VideoOrganizer>();
-        services.AddSingleton<IMessageUnit, CmMessageUnit>();
         services.AddSingleton<IVideoFileProvider, VideoFileProvider>();
+        services.AddSingleton<IPhotoMetadataService, PhotoMetadataService>();
+        services.AddSingleton<INameProvider, DefaultNameProvider>();
+        services.AddSingleton<IFileMover, SafeFileMover>();
+        services.AddSingleton<IFileOrganizer, FileOrganizer>();
+        services.AddSingleton<IMessageUnit, CmMessageUnit>();
         services.AddSingleton<IVideoMetadataService, VideoMetadataService>();
+        services.AddSingleton<IFileSearcher, FileSearcher>();
 
 
         services.AddSingleton<CmView>();

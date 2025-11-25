@@ -8,7 +8,7 @@ namespace FileRenameManager.Infrastructures
     {
         private readonly IReporter _reporter = reporter ?? throw new ArgumentNullException(nameof(reporter));
 
-        public PhotoWithDate GetPhotoWithDate(FileInfo file)
+        public FileWithDate GetMediaWithDate(FileInfo file,double hourOffset)
         {
             ArgumentNullException.ThrowIfNull(file);
 
@@ -25,8 +25,12 @@ namespace FileRenameManager.Infrastructures
             }
 
             dateTaken ??= GuessFallbackDate(file);
+            if (dateTaken != null && hourOffset != 0)
+            {
+                dateTaken = dateTaken.Value.AddHours(hourOffset);
+            }
 
-            return new PhotoWithDate(file, dateTaken);
+            return new FileWithDate(file, dateTaken);
         }
 
         private static DateTime? TryReadDateTaken(FileInfo file)

@@ -1,10 +1,5 @@
 ﻿namespace FileRenameManager.Core;
 
-public sealed class VideoWithDate(FileInfo file, DateTime? dateTaken)
-{
-    public FileInfo File { get; } = file ?? throw new ArgumentNullException(nameof(file));
-    public DateTime? DateTaken { get; } = dateTaken;
-}
 
 
 public sealed class VideoFileProvider : IVideoFileProvider

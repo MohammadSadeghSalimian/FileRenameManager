@@ -1,6 +1,6 @@
 ﻿namespace FileRenameManager.Core;
 
-public interface IVideoMetadataService
+public interface IVideoMetadataService : IMetadataService
 {
-    VideoWithDate GetVideoWithDate(FileInfo file);
+    FileWithDate GetMediaWithDate(FileInfo file,double hourOffset);
 }
