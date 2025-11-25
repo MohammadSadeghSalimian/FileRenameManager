@@ -109,7 +109,7 @@ public partial class FileSearcher(IReporter reporter, IImageFileProvider imageFi
         return true;
     }
 
-    [System.Text.RegularExpressions.GeneratedRegex(@"^(?<prefix>\w+)_(?<id>\d+)\s*_(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})-(?<hour>\d{2})-(?<minute>\d{2})-(?<seconds>\d{2})_Cy-(?<cycle>\d+\.\d+)(?<extension>\..+)$")]
+    [System.Text.RegularExpressions.GeneratedRegex(@"^(?<prefix>[A-z]+?)_*(?<id>\d+)\s*_(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})-(?<hour>\d{2})-(?<minute>\d{2})-(?<seconds>\d{2})_Cy-(?<cycle>\d+\.\d+).+(?<extension>\..+)$")]
     private static partial System.Text.RegularExpressions.Regex FixedCameraRegex();
 
 

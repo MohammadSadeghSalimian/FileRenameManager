@@ -12,11 +12,12 @@ public class CmView(IMessageUnit messageUnit, IMediator mediator)
 
     public async Task Start()
     {
+        Console.Clear();
+        AnsiConsole.Clear();
         bool keepRunning = true;
         while (keepRunning)
         {
-            Console.Clear();
-            AnsiConsole.Clear();
+            
             var request = await StartOptionChoices();
             switch (request)
             {
