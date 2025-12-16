@@ -1,6 +1,6 @@
 ﻿using FileRenameManager.App;
 using FileRenameManager.Core;
-using FileRenameManager.Infrastructures;
+using FileRenameManager.Infrastructures.MetaData;
 using FileRenameManager.Wpf.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

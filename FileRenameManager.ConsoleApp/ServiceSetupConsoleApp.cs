@@ -1,6 +1,7 @@
 ﻿using FileRenameManager.App;
 using FileRenameManager.Core;
-using FileRenameManager.Infrastructures;
+using FileRenameManager.Infrastructures.Excels;
+using FileRenameManager.Infrastructures.MetaData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -62,6 +63,7 @@ public class ServiceSetupConsoleApp
         services.AddSingleton<IMessageUnit, CmMessageUnit>();
         services.AddSingleton<IVideoMetadataService, VideoMetadataService>();
         services.AddSingleton<IFileSearcher, FileSearcher>();
+        services.AddSingleton<IExcelInputReader, ExcelInputReader>();
 
 
         services.AddSingleton<CmView>();

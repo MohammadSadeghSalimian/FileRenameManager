@@ -2,7 +2,7 @@
 using MetadataExtractor;
 using MetadataExtractor.Formats.QuickTime;
 
-namespace FileRenameManager.Infrastructures;
+namespace FileRenameManager.Infrastructures.MetaData;
 
 public sealed class VideoMetadataService(IReporter reporter) : IVideoMetadataService
 {

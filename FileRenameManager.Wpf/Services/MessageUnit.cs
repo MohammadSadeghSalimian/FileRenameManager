@@ -6,28 +6,28 @@ namespace FileRenameManager.Wpf.Services;
 
 public class MessageUnit(ILogger<MessageUnit> logger):IMessageUnit
 {
-    public Task Error(string message)
+    public Task ErrorAsync(string message)
     {
        MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
        logger.LogError(message);
        return Task.CompletedTask;
     }
 
-    public Task Warning(string message)
+    public Task WarningAsync(string message)
     {
         MessageBox.Show(message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
         logger.LogWarning(message);
         return Task.CompletedTask;
     }
 
-    public Task Info(string message)
+    public Task InfoAsync(string message)
     {
         MessageBox.Show(message, "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         logger.LogInformation(message);
         return Task.CompletedTask;
     }
 
-    public Task Error(Exception e)
+    public Task ErrorAsync(Exception e)
     {
         MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         logger.LogError(e, e.Message);

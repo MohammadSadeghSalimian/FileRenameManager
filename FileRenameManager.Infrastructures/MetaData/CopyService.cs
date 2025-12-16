@@ -1,6 +1,6 @@
 ﻿using FileRenameManager.App;
 
-namespace FileRenameManager.Infrastructures;
+namespace FileRenameManager.Infrastructures.MetaData;
 
 public class CopyService:ICopyService
 {

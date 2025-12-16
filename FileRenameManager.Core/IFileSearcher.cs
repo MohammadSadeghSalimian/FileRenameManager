@@ -8,4 +8,7 @@ public interface IFileSearcher
         CancellationToken cancellationToken = default);
 
     Task<IReadOnlyList<CycleFileWithDate>> SearchForFixedCameraImageAsync(DirectoryInfo source,bool recursive,CancellationToken cancellationToken=default);
+
+
+    Task<IReadOnlyList<CycleFileWithDate>> SearchForFilesWithCycleNumberAsync(DirectoryInfo source, bool recursive, CancellationToken cancellationToken = default);
 }

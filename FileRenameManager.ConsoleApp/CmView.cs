@@ -17,22 +17,25 @@ public class CmView(IMessageUnit messageUnit, IMediator mediator)
         bool keepRunning = true;
         while (keepRunning)
         {
-            
+
             var request = await StartOptionChoices();
             switch (request)
             {
-                case RequestedMethod.PhoneCamera:
+                case "Phone Camera":
                     await RunPhoneCameraRenaming();
                     break;
-                case RequestedMethod.RoamingCamera:
+                case "Roaming Camera":
                     await RunRoamingCameraRenaming();
                     break;
-                case RequestedMethod.FixedCamera:
+                case "Fixed Camera":
                     await RunFixedCamera();
                     break;
-                case RequestedMethod.DicCamera:
+                case "DIC cameras":
                     break;
-                case RequestedMethod.Exit:
+                case "Adding Drift Level to Name":
+                    await RunAddingDriftLevel();
+                    break;
+                case "Exit":
                     keepRunning = false;
                     break;
                 default:
@@ -41,14 +44,15 @@ public class CmView(IMessageUnit messageUnit, IMediator mediator)
         }
 
     }
-    private async Task<RequestedMethod> StartOptionChoices()
+    private async Task<string> StartOptionChoices()
     {
-        var pp = new SelectionPrompt<RequestedMethod>()
+        var pp = new SelectionPrompt<string>()
         {
-            Title = "`How are your images are taken?",
-            Converter = x => x.ToString().Humanize()
+            Title = "`Select renaming method",
+            Converter = x => x
         };
-        pp.AddChoices([RequestedMethod.PhoneCamera, RequestedMethod.FixedCamera, RequestedMethod.RoamingCamera, RequestedMethod.DicCamera, RequestedMethod.Exit]);
+        pp.AddChoices("Phone Camera", "Fixed Camera", "Roaming Camera", "DIC cameras", "Adding Drift Level to Name", "Exit");
+
 
         var res = await AnsiConsole.PromptAsync(pp);
         return res;
@@ -79,16 +83,16 @@ public class CmView(IMessageUnit messageUnit, IMediator mediator)
                 AllowEmpty = true,
             });
 
-            await messageUnit.Info("Renaming started...");
+            await messageUnit.InfoAsync("Renaming started...");
             var res = await mediator.Send(new OrganizePhoneCameraRq(directoryInfo, recursive, hours));
             if (res)
             {
-                await messageUnit.Info("Finished");
+                await messageUnit.InfoAsync("Finished");
             }
         }
         catch (Exception e)
         {
-            await messageUnit.Error(e);
+            await messageUnit.ErrorAsync(e);
         }
     }
 
@@ -116,16 +120,16 @@ public class CmView(IMessageUnit messageUnit, IMediator mediator)
             });
 
 
-            await messageUnit.Info("Renaming started...");
+            await messageUnit.InfoAsync("Renaming started...");
             var res = await mediator.Send(new RenameRoamingCameraRq(directoryInfo, recursive, hours));
             if (res)
             {
-                await messageUnit.Info("Finished");
+                await messageUnit.InfoAsync("Finished");
             }
         }
         catch (Exception e)
         {
-            await messageUnit.Error(e);
+            await messageUnit.ErrorAsync(e);
         }
     }
 
@@ -144,16 +148,45 @@ public class CmView(IMessageUnit messageUnit, IMediator mediator)
             var directoryInfo = new DirectoryInfo(dd);
 
 
-            await messageUnit.Info("Renaming started...");
+            await messageUnit.InfoAsync("Renaming started...");
             var res = await mediator.Send(new MovingFixedCameraImagesRq(directoryInfo));
             if (res)
             {
-                await messageUnit.Info("Finished");
+                await messageUnit.InfoAsync("Finished");
             }
         }
         catch (Exception e)
         {
-            await messageUnit.Error(e);
+            await messageUnit.ErrorAsync(e);
+        }
+    }
+
+    private async Task RunAddingDriftLevel()
+    {
+        try
+        {
+            AnsiConsole.WriteLine("This option allows adding a drift level to the images name which has cy in their names.");
+           
+           
+            var excelFileAddress = await AnsiConsole.PromptAsync(new TextPrompt<string>("Please enter the excel input file:")
+            {
+                AllowEmpty = false,
+            });
+            excelFileAddress = excelFileAddress.Replace("\"", "").Trim(); // Added Trim() to clean up any surrounding whitespace
+            await messageUnit.InfoAsync("Adding drift level started...");
+            var response = await mediator.Send(new AddDriftLevelRq( new FileInfo(excelFileAddress)));
+            if (response.IsSuccess)
+            {
+                await messageUnit.InfoAsync("Finished");
+            }
+            else
+            {
+                await messageUnit.ErrorAsync(response.Message);
+            }
+        }
+        catch (Exception e)
+        {
+            await messageUnit.ErrorAsync(e);
         }
     }
 

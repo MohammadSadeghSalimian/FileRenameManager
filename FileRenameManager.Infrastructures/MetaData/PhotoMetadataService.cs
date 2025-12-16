@@ -2,7 +2,7 @@
 using MetadataExtractor;
 using MetadataExtractor.Formats.Exif;
 
-namespace FileRenameManager.Infrastructures
+namespace FileRenameManager.Infrastructures.MetaData
 {
     public sealed class PhotoMetadataService(IReporter reporter) : IPhotoMetadataService
     {

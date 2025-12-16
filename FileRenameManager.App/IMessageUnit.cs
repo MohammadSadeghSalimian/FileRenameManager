@@ -2,10 +2,10 @@
 
 public interface IMessageUnit
 {
-    public Task Error(string message);
+    public Task ErrorAsync(string message);
 
-    public Task Warning(string message);
-    public Task Info(string message);
+    public Task WarningAsync(string message);
+    public Task InfoAsync(string message);
 
-    public Task Error(Exception e);
+    public Task ErrorAsync(Exception e);
 }

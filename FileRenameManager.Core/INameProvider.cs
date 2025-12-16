@@ -7,4 +7,8 @@ public interface INameProvider
 
     string GetFileNameBasedOnDate(DateTime dateTaken,string extension);
     string GetNameCycleFile(CycleFileWithDate cycleFile);
+
+    string GetNameWithDriftLevel(CycleFileWithDate cycleFile, double driftLevel,string cycleType);
+
+
 }

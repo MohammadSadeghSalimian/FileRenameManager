@@ -43,7 +43,7 @@ public sealed partial class CalenderRenamerVm : BaseVm
             }
             catch (Exception e)
             {
-                await _messageUnit.Error(e);
+                await _messageUnit.ErrorAsync(e);
             }
         }
     }

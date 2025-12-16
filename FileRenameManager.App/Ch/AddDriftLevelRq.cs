@@ -7,6 +7,5 @@ using MediatR;
 
 namespace FileRenameManager.App.Ch
 {
-    public record OrganizePhoneCameraRq(DirectoryInfo FolderAddress,bool Recursive,double Hours) : IRequest<bool>;
+    public record AddDriftLevelRq( FileInfo ExcelFileAddress) : IRequest<AddDriftLevelRs>;
 }
-

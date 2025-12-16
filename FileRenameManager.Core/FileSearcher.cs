@@ -57,7 +57,7 @@ public partial class FileSearcher(IReporter reporter, IImageFileProvider imageFi
         var images = imageFileProvider.GetImageFiles(source, recursive);
         var videos = videoFileProvider.GetVideoFiles(source, recursive);
         var files = images.Concat(videos).ToList();
-        reporter.Info($"Found {files.Count} image file(s).");
+        reporter.Info($"Found {files.Count} file(s).");
 
         var cycleFiles = new List<CycleFileWithDate>(files.Count);
 
@@ -75,6 +75,32 @@ public partial class FileSearcher(IReporter reporter, IImageFileProvider imageFi
         return cycleFiles;
     }
 
+    public async Task<IReadOnlyList<CycleFileWithDate>> SearchForFilesWithCycleNumberAsync(DirectoryInfo source, bool recursive, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+        if (!source.Exists)
+            throw new DirectoryNotFoundException(source.FullName);
+
+        reporter.Info($"Starting search operation in {source.FullName} (recursive={recursive})");
+
+        var images = imageFileProvider.GetImageFiles(source, recursive);
+        var videos = videoFileProvider.GetVideoFiles(source, recursive);
+        var files = images.Concat(videos).ToList();
+        reporter.Info($"Found {files.Count} file(s).");
+        var cycleFiles = new List<CycleFileWithDate>(files.Count);
+
+        await Task.Run(() =>
+        {
+            foreach (var file in files)
+            {
+                if (TryToGetFilesWithCycleNumber(file, out var cycleFile))
+                {
+                    cycleFiles.Add(cycleFile!);
+                }
+            }
+        }, cancellationToken);
+        return cycleFiles;
+    }
 
 
     private static bool TryGetFixedCameraImageNames(FileInfo file, out CycleFileWithDate? cycleFile)
@@ -109,8 +135,38 @@ public partial class FileSearcher(IReporter reporter, IImageFileProvider imageFi
         return true;
     }
 
+    private static bool TryToGetFilesWithCycleNumber(FileInfo file, out CycleFileWithDate? cycleFile)
+    {
+       
+        var match = FilesWithCycleNumberRegex().Match(file.Name);
+        if (!match.Success)
+        {
+            cycleFile = null;
+            return false;
+        }
+
+        var g = match.Groups;
+        var prefix = g["prefix"].Value;
+        var id = g["id"].Value;
+        var year = int.Parse(g["year"].Value);
+        var month = int.Parse(g["month"].Value);
+        var day = int.Parse(g["day"].Value);
+        var hour = int.Parse(g["hour"].Value);
+        var minute = int.Parse(g["minute"].Value);
+        var seconds = int.Parse(g["second"].Value);
+
+        // Cycle uses dot as decimal separator in the regex; parse with invariant culture.
+        var cycle = double.Parse(g["cycle"].Value, System.Globalization.CultureInfo.InvariantCulture);
+
+        var date = new DateTime(year, month, day, hour, minute, seconds);
+
+        cycleFile = new CycleFileWithDate(file, date, cycle, prefix, id);
+        return true;
+    }
+
+
     [System.Text.RegularExpressions.GeneratedRegex(@"^(?<prefix>[A-z]+?)_*(?<id>\d+)\s*_(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})-(?<hour>\d{2})-(?<minute>\d{2})-(?<seconds>\d{2})_Cy-(?<cycle>\d+\.\d+).+(?<extension>\..+)$")]
     private static partial System.Text.RegularExpressions.Regex FixedCameraRegex();
-
-
+    [System.Text.RegularExpressions.GeneratedRegex(@"^(?<prefix>.*?)(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})-(?<hour>\d{2})-(?<minute>\d{2})-(?<second>\d{2})[-_](?i:cy)[- ]?(?<cycle>\d+(?:\.\d+)?)(?<id_part>\s*\((?<id>\d+)\))?(?<extension>\.\w+)?$")]
+    private static partial System.Text.RegularExpressions.Regex FilesWithCycleNumberRegex();
 }

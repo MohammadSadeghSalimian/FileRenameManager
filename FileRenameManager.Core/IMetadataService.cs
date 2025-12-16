@@ -1,7 +1,6 @@
 ﻿namespace FileRenameManager.Core;
 
-public interface IPhotoMetadataService : IMetadataService
+public interface IMetadataService
 {
     FileWithDate GetMediaWithDate(FileInfo file,double hourOffset);
 }
-

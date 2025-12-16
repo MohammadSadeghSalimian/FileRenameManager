@@ -1,4 +1,6 @@
-﻿namespace FileRenameManager.Core;
+﻿using System.Threading;
+
+namespace FileRenameManager.Core;
 
 /// <summary>
 /// Organizes image files into date-based folders using injected services.
@@ -10,14 +12,14 @@
 /// <param name="nameProvider">Provider that maps a <see cref="System.DateTime"/> to a folder name string.</param>
 /// <param name="fileMover">Component responsible for moving files to a target directory.</param>
 /// <param name="reporter">Reporter used to emit informational, warning and error messages.</param>
-    public sealed class FileOrganizer(
-    INameProvider nameProvider,
-    IFileMover fileMover,
-    IReporter reporter)
-    : IFileOrganizer
+public sealed class FileOrganizer(
+INameProvider nameProvider,
+IFileMover fileMover,
+IReporter reporter)
+: IFileOrganizer
 {
-   
-  
+
+
 
     /// <summary>
     /// Provider that converts a <see cref="System.DateTime"/> into a folder name.
@@ -34,7 +36,7 @@
     /// </summary>
     private readonly IReporter _reporter = reporter ?? throw new ArgumentNullException(nameof(reporter));
 
-    
+
     public async Task MoveToDateFolderAsync(IReadOnlyList<FileWithDate> files, DirectoryInfo destination,
         bool dryRun = false,
         CancellationToken cancellationToken = default)
@@ -71,12 +73,10 @@
     }
 
 
-    public async Task RenameToDateNameBasedAsync(IReadOnlyList<FileWithDate> files, DirectoryInfo destination,
+    public async Task RenameToDateNameBasedAsync(IReadOnlyList<FileWithDate> files,
         bool dryRun = false, CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(destination);
-        if (!destination.Exists)
-            throw new DirectoryNotFoundException(destination.FullName);
+       
 
         foreach (var file in files)
         {
@@ -94,10 +94,10 @@
                 continue;
             }
 
-           
+
             if (dryRun)
             {
-                _reporter.Info($"[DRY-RUN] Would rename {file.File.Name} → {newFileName}");
+                _reporter.Info($"DRY-RUN: Would rename {file.File.Name} → {newFileName}");
             }
             else
             {
@@ -137,7 +137,7 @@
 
             if (dryRun)
             {
-                _reporter.Info($"[DRY-RUN] Would move {file.File.Name} → {targetDir.FullName}");
+                _reporter.Info($"DRY-RUN: Would move {file.File.Name} → {targetDir.FullName}");
             }
             else
             {
@@ -146,10 +146,56 @@
                     Directory.CreateDirectory(targetDir.FullName);
 
                     _fileMover.MoveFile(file.File, targetFile);
+                    _reporter.Info($"move: {file.File.Name} → {targetDir.FullName}");
                 }, cancellationToken);
             }
         }
 
         _reporter.Info("Organization finished.");
     }
+
+
+
+    public async Task AddDriftLevelToCycleFilesAsync(IReadOnlyList<CycleFileWithDate> files,IReadOnlyDictionary<double,CycleUnit> dictionary, bool dryRun = false, CancellationToken cancellationToken = default)
+    {
+       
+        foreach (var file in files)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (!dictionary.TryGetValue(file.CycleNumber,out var cycleUnit))
+            {
+                continue;
+            }
+
+            var newFileName = _nameProvider.GetNameWithDriftLevel(file, cycleUnit.DriftLevel, cycleUnit.CycleType);
+            if (file.File.Directory == null)
+            {
+                _reporter.Warn($"No usable date for {file.File.Name}, skipping.");
+                continue;
+            }
+
+
+            if (dryRun)
+            {
+                _reporter.Info($"DRY-RUN: Would rename {file.File.Name} → {newFileName}");
+            }
+            else
+            {
+                await Task.Run(() =>
+                {
+                    try
+                    {
+                        _fileMover.RenameFile(file.File, newFileName);
+                        _reporter.Info($"rename: {file.File.Name} → {newFileName}");
+                    }
+                    catch (IOException e)
+                    {
+                        _reporter.Warn(e.Message);
+                        _reporter.Warn("The file is skipped!");
+                    }
+                }, cancellationToken);
+            }
+        }
+    }
+
 }
