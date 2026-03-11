@@ -11,4 +11,5 @@ public interface INameProvider
     string GetNameWithDriftLevel(CycleFileWithDate cycleFile, double driftLevel,string cycleType);
 
 
+    string GetNameWithCycleAndDriftLevel(CycleAndDlFile file);
 }

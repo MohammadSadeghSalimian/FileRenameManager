@@ -138,6 +138,7 @@ IReporter reporter)
             if (dryRun)
             {
                 _reporter.Info($"DRY-RUN: Would move {file.File.Name} → {targetDir.FullName}");
+                
             }
             else
             {
@@ -197,5 +198,46 @@ IReporter reporter)
             }
         }
     }
+
+
+    public async Task RenameFileForCycleAndDriftAsync(IReadOnlyList<CycleAndDlFile> files, bool dryRun = false, CancellationToken cancellationToken = default)
+    {
+
+        foreach (var file in files)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+           
+            var newFileName = _nameProvider.GetNameWithCycleAndDriftLevel(file);
+            if (file.File.Directory == null)
+            {
+                _reporter.Warn($"No usable date for {file.File.Name}, skipping.");
+                continue;
+            }
+
+
+            if (dryRun)
+            {
+                _reporter.Info($"DRY-RUN: Would rename {file.File.Name} → {newFileName}");
+            }
+            else
+            {
+                await Task.Run(() =>
+                {
+                    try
+                    {
+                        _fileMover.RenameFile(file.File, newFileName);
+                        _reporter.Info($"rename: {file.File.Name} → {newFileName}");
+                    }
+                    catch (IOException e)
+                    {
+                        _reporter.Warn(e.Message);
+                        _reporter.Warn("The file is skipped!");
+                    }
+                }, cancellationToken);
+            }
+        }
+    }
+
+
 
 }

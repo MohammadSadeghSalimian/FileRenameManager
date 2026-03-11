@@ -11,4 +11,5 @@ public interface IFileSearcher
 
 
     Task<IReadOnlyList<CycleFileWithDate>> SearchForFilesWithCycleNumberAsync(DirectoryInfo source, bool recursive, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<CycleAndDlFile>> SearchFilesWithCycleNumberInParentFolder(DirectoryInfo source, bool recursive, CancellationToken cancellationToken);
 }

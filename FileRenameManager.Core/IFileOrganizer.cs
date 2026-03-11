@@ -20,4 +20,5 @@ public interface IFileOrganizer
 
 
     Task AddDriftLevelToCycleFilesAsync(IReadOnlyList<CycleFileWithDate> files,IReadOnlyDictionary<double,CycleUnit> dictionary, bool dryRun = false, CancellationToken cancellationToken = default);
+    Task RenameFileForCycleAndDriftAsync(IReadOnlyList<CycleAndDlFile> files, bool dryRun = false, CancellationToken cancellationToken = default);
 }

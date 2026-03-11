@@ -33,4 +33,22 @@ public sealed partial class DefaultNameProvider : INameProvider
             //Left_12619 _2025-11-03-09-54-23_Cy-0.50
             $"{cycleFile.Prefix}_{cycleFile.DateTaken:yyyy-MM-dd-HH-mm-ss}_Cy-{cycleFile.CycleNumber:0.00}-D {driftLevel:F2}-{cyceleType}{cycleFile.Extension}";
     }
+    public string GetNameWithCycleAndDriftLevel(CycleAndDlFile file)
+    {
+        var cycle=file.CycleNumber;
+
+        var cTypeValue = (cycle * 4)%4;
+        var cycleType = cTypeValue switch
+        {
+            0 => "UN",
+            1 => "LP",
+            2 => "UP",
+            3 => "LN",
+            _ => "Unknown"
+        };
+
+        return
+            $"{file.DateTaken:yyyy-MM-dd-HH-mm-ss}-Cy {file.CycleNumber:0.00}-D {file.DriftLevel:F2}-{cycleType}{file.Extension}";
+
+    }
 }

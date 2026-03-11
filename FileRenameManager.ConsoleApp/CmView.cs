@@ -14,7 +14,7 @@ public class CmView(IMessageUnit messageUnit, IMediator mediator)
     {
         Console.Clear();
         AnsiConsole.Clear();
-        bool keepRunning = true;
+        var keepRunning = true;
         while (keepRunning)
         {
 
@@ -35,6 +35,9 @@ public class CmView(IMessageUnit messageUnit, IMediator mediator)
                 case "Adding Drift Level to Name":
                     await RunAddingDriftLevel();
                     break;
+                case "Add Cycle to file name from folder":
+                    await AddCycleValueFromFolder();
+                    break;
                 case "Exit":
                     keepRunning = false;
                     break;
@@ -51,7 +54,7 @@ public class CmView(IMessageUnit messageUnit, IMediator mediator)
             Title = "`Select renaming method",
             Converter = x => x
         };
-        pp.AddChoices("Phone Camera", "Fixed Camera", "Roaming Camera", "DIC cameras", "Adding Drift Level to Name", "Exit");
+        pp.AddChoices("Phone Camera", "Fixed Camera", "Roaming Camera", "DIC cameras", "Adding Drift Level to Name", "Add Cycle to file name from folder", "Exit");
 
 
         var res = await AnsiConsole.PromptAsync(pp);
@@ -189,5 +192,43 @@ public class CmView(IMessageUnit messageUnit, IMediator mediator)
             await messageUnit.ErrorAsync(e);
         }
     }
+
+
+    private async Task AddCycleValueFromFolder()
+    {
+        try
+        {
+            AnsiConsole.WriteLine("This option allows you to add the cycle value to the name of the file from the name of the inner folder.");
+            var recursive = await AnsiConsole.PromptAsync(new SelectionPrompt<bool>()
+            {
+                Title = "Search other folders inside the main folder?",
+                Converter = x => x ? "Yes" : "No"
+            }.AddChoices(false, true));
+
+            var dd = await AnsiConsole.PromptAsync(new TextPrompt<string>("Please enter the folder path:")
+            {
+                AllowEmpty = true,
+
+            }.Validate(x => Directory.Exists(x)
+                ? ValidationResult.Success()
+                : ValidationResult.Error("The folder doesn't exist")));
+            var directoryInfo = new DirectoryInfo(dd);
+           
+    
+            await messageUnit.InfoAsync("Renaming started...");
+
+            var res = await mediator.Send(new AddCycleValueFromParentFolderRq(directoryInfo,recursive));
+            if (res.IsSuccess)
+            {
+                await messageUnit.InfoAsync("Finished");
+            }
+
+        }
+        catch (Exception e)
+        {
+            await messageUnit.ErrorAsync(e);
+        }
+    }
+
 
 }
